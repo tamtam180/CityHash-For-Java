@@ -272,6 +272,29 @@ public class CityHash {
 
     }
 
+    public static byte[][] cityHash128WithSeedb(byte[] s, long seed0, long seed1) {
+        return cityHash128WithSeedb(s, 0, s.length, seed0, seed1);
+    }
+
+    public static byte[][] cityHash128WithSeedb(byte[] s, int pos, int len, long seed0, long seed1) {
+        long[] l = cityHash128WithSeed(s, pos, len, seed0, seed1);
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+
+        buffer.putLong(l[0]);
+        byte[][] bytes = new byte[2][8];
+        System.arraycopy(buffer.array(), 0, bytes[0], 0, 8);
+
+        buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.putLong(l[1]);
+        System.arraycopy(buffer.array(), 0, bytes[1], 0, 8);
+
+        return bytes;
+    }
+
+    public static long[] cityHash128WithSeed(byte[] s, long seed0, long seed1) {
+        return cityHash128WithSeed(s, 0, s.length, seed0, seed1);
+    }
+
     public static long[] cityHash128WithSeed(byte[] s, int pos, int len, long seed0, long seed1) {
 
         if (len < 128) {
@@ -340,6 +363,30 @@ public class CityHash {
                 hashLen16(x + w[1], y + v[1])
         };
 
+    }
+
+    public static byte[][] cityHash128b(byte[] s) {
+        return cityHash128b(s, 0, s.length);
+    }
+
+    public static byte[][] cityHash128b(byte[] s, int pos, int len) {
+        long[] l = cityHash128(s, pos, len);
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+
+        buffer.putLong(l[0]);
+        byte[][] bytes = new byte[2][8];
+        System.arraycopy(buffer.array(), 0, bytes[0], 0, 8);
+
+        buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.putLong(l[1]);
+        System.arraycopy(buffer.array(), 0, bytes[1], 0, 8);
+
+        return bytes;
+    }
+
+
+    public static long[] cityHash128(byte[] s) {
+        return cityHash128(s, 0, s.length);
     }
 
     public static long[] cityHash128(byte[] s, int pos, int len) {

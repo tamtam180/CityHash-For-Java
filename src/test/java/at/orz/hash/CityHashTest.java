@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2012 tamtam180
+ * Copyright (C) 2021 nikitasius
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +18,12 @@
 package at.orz.hash;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.nio.ByteBuffer;
 
 /**
  * @author tamtam180 - kirscheless at gmail.com
@@ -87,4 +90,15 @@ public class CityHashTest {
 
     }
 
+    @Test
+    public void testCityHash64b() {
+        ByteBuffer bb = ByteBuffer.allocate(Long.BYTES);
+        bb.putLong(3201855508716831834L);
+        assertArrayEquals(bb.array(), CityHash.cityHash64b(new byte[]{0x64, 0x65, 0x66}));
+    }
+
+    @Test
+    public void testCityHash64() {
+        assertEquals(3201855508716831834L, CityHash.cityHash64(new byte[]{0x64, 0x65, 0x66}));
+    }
 }
